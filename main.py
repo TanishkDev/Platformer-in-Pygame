@@ -6,11 +6,15 @@ pygame.init()
 
 class Game:
     def __init__(self):
-        level = Level(screen)
-        level.run()
+        self.level = Level(screen)
+
+    def run(self):
+        screen.fill((255, 255, 255))
+        self.level.run()
 
 
-screen = pygame.display.set_mode((screen_width, screen_width))
+screen = pygame.display.set_mode((screen_width, screen_height))
+clock = pygame.time.Clock()
 
 game = Game()
 
@@ -20,4 +24,7 @@ while True:
             pygame.quit()
             sys.exit()
 
+    game.run()
+    clock.tick(60)
     pygame.display.update()
+
