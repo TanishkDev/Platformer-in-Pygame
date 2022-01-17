@@ -1,6 +1,7 @@
 import pygame
 
 
+# A normal tile
 class Tile(pygame.sprite.Sprite):
     def __init__(self, size, x, y):
         super().__init__()
@@ -8,11 +9,12 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
 
     def update(self, shift):
-        self.rect.x += shift
+        self.rect.x += shift # Moves tile using world shift
 
-
+# Staic Tile
 class StaticTile(Tile):
     def __init__(self,size,x,y,surface):
         super().__init__(size,x,y)
         self.image = surface
         self.image = pygame.transform.scale(self.image,(64,64))
+

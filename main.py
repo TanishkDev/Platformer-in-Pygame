@@ -6,15 +6,17 @@ pygame.init()
 
 class Game:
     def __init__(self):
-        self.level = Level(screen)
+        self.level = Level(screen) # Initialising Level 
 
     def run(self):
-        screen.fill((255, 255, 255))
+        screen.blit(background,(0,0))
         self.level.run()
 
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-clock = pygame.time.Clock()
+clock = pygame.time.Clock() 
+background = pygame.image.load("/home/tanishk/Desktop/Pygame/Platformer/game_data/images/SpriteSheets/background.png").convert_alpha()
+background = pygame.transform.scale(background,(screen_width,screen_height))
 
 game = Game()
 
@@ -25,6 +27,7 @@ while True:
             sys.exit()
 
     game.run()
-    clock.tick(60)
+    clock.tick(60)#FPS
     pygame.display.update()
+
 
