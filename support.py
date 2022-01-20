@@ -1,7 +1,7 @@
 from csv import reader
 import pygame.image
 from setting import *
-
+from os import walk
 
 
 #Imports Tile map form CSV file and return it as a list
@@ -31,4 +31,13 @@ def import_cut_graphics(path=sprite_sheet_path):
 
     return cut_tiles
 
+def import_folder(path):
+    surface_list = []
 
+    for __,___,image_files in walk(path):
+        for image in image_files:
+            full_path  = path+"/"+image
+            surf = pygame.image.load(full_path).convert_alpha()
+            surface_list.append(surf)
+
+    return  surface_list

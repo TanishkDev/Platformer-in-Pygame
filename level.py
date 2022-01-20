@@ -5,7 +5,7 @@ from game_data import level_0
 from setting import *
 from tiles import StaticTile
 from player import Player
-
+from particles import ParticleEffect
 
 class Level:
     def __init__(self, surface):
@@ -17,7 +17,7 @@ class Level:
 
         # Player
         self.player = pygame.sprite.GroupSingle()
-        player_sprite = Player((100, 100))
+        player_sprite = Player((100, 100),self.surface,self.create_jump_particles)
         self.player.add(player_sprite)
 
         # terrain
@@ -35,6 +35,10 @@ class Level:
         # coin
         coin_layout = import_csv_layout(level_0["coin"])
         self.coin = self.create_tile_group(coin_layout, "coin")
+
+        #dust
+        self.dust_sprite = pygame.sprite.GroupSingle()
+
 
     # Creates Tile Group
     def create_tile_group(self, layout, type):
@@ -100,10 +104,19 @@ class Level:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
                     player.rect.bottom = sprite.rect.top
+                    player.on_ground = True
                     player.direction.y = 0
                 elif player.direction.y < 0:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
+
+    def create_jump_particles(self,pos):
+        if self.player.sprite.on_right:
+            pos -= pygame.math.Vector2(10,5)
+        else:
+            pos += pygame.math.Vector2(10,-5)
+        jump_particle_sprite = ParticleEffect(pos,"jump")
+        self.dust_sprite.add(jump_particle_sprite)
 
     def run(self):
         # Terrain
@@ -128,3 +141,7 @@ class Level:
         self.horizontal_movement_collision()
         self.player.draw(self.surface)
         self.scroll_x()
+
+        #dust
+        self.dust_sprite.update(self.world_shift)
+        self.dust_sprite.draw(self.surface)
